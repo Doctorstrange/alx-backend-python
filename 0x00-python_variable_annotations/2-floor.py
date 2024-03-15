@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """float: The sum of the two numbers."""
-
-
 import math
 
 
