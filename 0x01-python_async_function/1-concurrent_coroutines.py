@@ -1,30 +1,22 @@
 #!/usr/bin/env python3
-""" Coroutine at the same time witha sync """
-import asyncio
-import random
+
+"""Defines asynchronous coroutines takes in 2 int arguments (in this order)"""
+
 from typing import List
 
+try:
+    wait = __import__('0-basic_async_syntax').wait_random
+except ImportError:
+    pass
 
-wait_random = __import__('0-basic_async_syntax').wait_random
 
-
-async def wait_n(n: int = 0, max_delay: int = 10) -> List[float]:
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """
-        Args:
-            max_delay: max wait
-            n: spawn function
-
-        Return:
-            float time random
+    takes in 2 int arguments (in this order)
+    :return: the list of all the delays (float values)
     """
-    delays: List[float] = []
-    tasks: List = []
-
+    delays = []
     for _ in range(n):
-        tasks.append(wait_random(max_delay))
-
-    for task in asyncio.as_completed((tasks)):
-        delay = await task
+        delay = await wait(max_delay)
         delays.append(delay)
-
-    return delays
+    return sorted(delays)
