@@ -14,7 +14,6 @@ except ImportError:
 def task_wait_random(max_delay: int) -> asyncio.Task:
     """that takes an integer max_delay and returns a asyncio.Task
 
-    :time module to measure an approximate elapsed time
     :return: An asyncio.Task
     """
     return asyncio.create_task(wait(max_delay))
