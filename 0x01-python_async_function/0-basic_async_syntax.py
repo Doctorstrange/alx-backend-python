@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 """
-    takes in an integer argument
-    (max_delay, with a default value of 10)
-    named wait_random that waits for a random delay
-    between 0 and max_delay (included and float value)
-    seconds and eventually returns it.
+    Defines  wait_random() asynchronous coroutine that takes
+    an integer argument max_delay with default value of 10.
+    Using the random.uniform(), it generates random float between
+    0 and max_delay.
 """
 
 import asyncio
