@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
     takes in an integer argument
     (max_delay, with a default value of 10)
