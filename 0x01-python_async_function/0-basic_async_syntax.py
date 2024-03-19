@@ -14,16 +14,13 @@ import random
 
 async def wait_random(max_delay=10) -> float:
     """
-        Waits for a random delay between 0 and
-        max_delay seconds (inclusive) and returns it.
+        An asynchronous coroutine that waits for
+        a random delay between 0 and max_delay
+        seconds and eventually returns it
 
-        Args:
-            max_delay (float, optional): The maximum
-            delay in seconds. Defaults to 10.
-
-    Yields:
-        float: The random delay that was waited for.
-    """
+    :param max_delay: maximum delay time
+    :return: Return delay time
+   """
 
     delay = random.uniform(0, max_delay)
     await asyncio.sleep(delay)
