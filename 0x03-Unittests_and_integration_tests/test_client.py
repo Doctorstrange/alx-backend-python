@@ -2,7 +2,7 @@
 """A module for testing the utils module.
 """
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from parameterized import parameterized
 from client import get_json, GithubOrgClient
 
@@ -28,3 +28,20 @@ class TestGithubOrgClient(unittest.TestCase):
             result = test_client._public_repos_url()
 
             self.assertEqual(result, "https://api.github.com/orgs/test_org/repos")
+
+    @patch('client.get_json')
+    @patch('client.GithubOrgClient._public_repos_url', new_callable=MagicMock)
+    def test_public_repos(self, mock_public_repos_url, mock_get_json):
+        mock_payload = [{"name": "repo1"}, {"name": "repo2"}]
+        mock_public_repos_url.return_value = "https://api.github.com/orgs/test_org/repos"
+        mock_get_json.return_value = mock_payload
+
+        test_client = GithubOrgClient('test_org')
+
+        repos = test_client.public_repos()
+
+        expected_repos = [{"name": "repo1"}, {"name": "repo2"}]
+        self.assertEqual(repos, expected_repos)
+
+        mock_public_repos_url.assert_called_once()
+        mock_get_json.assert_called_once_with("https://api.github.com/orgs/test_org/repos")
