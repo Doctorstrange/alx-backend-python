@@ -5,6 +5,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from parameterized import parameterized
 from client import get_json, GithubOrgClient
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 class TestGithubOrgClient(unittest.TestCase):
 
@@ -54,3 +55,30 @@ class TestGithubOrgClient(unittest.TestCase):
         test_client = GithubOrgClient('test_org')
         result = test_client.has_license(license_key, [repo])
         self.assertEqual(result, expected_result)
+
+    @classmethod
+    def setUpClass(cls):
+        cls.get_patcher = patch('client.requests.get')
+        cls.mock_get = cls.get_patcher.start()
+
+        # Configure the side_effect of mock_get
+        cls.mock_get.side_effect = [
+            unittest.mock.Mock(json=lambda: cls.org_payload),
+            unittest.mock.Mock(json=lambda: cls.repos_payload)
+        ]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        test_client = GithubOrgClient('test_org')
+        repos = test_client.public_repos()
+
+        self.assertEqual(repos, self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        test_client = GithubOrgClient('test_org')
+        apache2_repos = test_client.public_repos('Apache-2.0')
+
+        self.assertEqual(apache2_repos, self.apache2_repos)
