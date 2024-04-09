@@ -56,6 +56,8 @@ class TestGithubOrgClient(unittest.TestCase):
         result = test_client.has_license(license_key, [repo])
         self.assertEqual(result, expected_result)
 
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.get_patcher = patch('client.requests.get')
